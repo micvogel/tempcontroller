@@ -12,11 +12,13 @@ sht31 = Sht3x()
 pid = PIDcontroller(1, 0, 0)
 oxr = Oxyreader()
 
-targetTemp = 26
+targetTemp = 29
 
+ventiPin = 5
 heaterPin = 6
 
 GPIO.setmode(GPIO.BCM)
+GPIO.setup(ventiPin, GPIO.OUT)
 GPIO.setup(heaterPin, GPIO.OUT)
 
 start_time = time.time()
@@ -28,12 +30,21 @@ temp = []
 corr = []
 oxytemp = []
 
+counter = 0
+
 
 def power_heater(set_state):
     if set_state == 1:
         GPIO.output(heaterPin, GPIO.HIGH)
     else:
         GPIO.output(heaterPin, GPIO.LOW)
+        
+def power_venti(set_state):
+    if set_state == 1:
+        GPIO.output(ventiPin, GPIO.HIGH)
+    else:
+        GPIO.output(ventiPin, GPIO.LOW)
+    
 
 try:
     while True:
@@ -45,9 +56,23 @@ try:
         
         if correction > 0:
             power_heater(1)
+            
+            #Do some ventilation everzy 20 seconds
+            if counter > 40:
+                       
+               power_heater(0)
                
+               power_venti(1)
+               
+               time.sleep(2)
+               power_venti(0)
+                           
+               power_heater(1)
+               counter = 0
+            
         else:
             power_heater(0)
+            power_venti(1)
             
         timeEllapsed = round(time.time() - start_time, 2)
         
@@ -55,6 +80,7 @@ try:
         print("Correction: " + str(correction))
         print("Temperature [C]: " + str(currentTemp))
         print("First Temperature [C]: " + str(oxyTemp))
+        
         
         times.append(timeEllapsed)
         oxytemp.append(oxyTemp)
@@ -66,12 +92,14 @@ try:
         
         file.write(datastr)
 
+        counter = counter + 1
+        print("Counter: " + str(counter))
         time.sleep(0.5)
 
 except KeyboardInterrupt:
     
    GPIO.output(heaterPin, GPIO.LOW)
-
+   GPIO.output(ventiPin, GPIO.LOW)
    file.close()
     
    fig, ax = plt.subplots()
@@ -89,3 +117,4 @@ except KeyboardInterrupt:
 
    plt.show()
     
+
