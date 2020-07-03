@@ -8,10 +8,10 @@ from oxyreader import Oxyreader
 
 
 sht31 = Sht3x()
-pid = PIDcontroller(200, 0, 0)
+pid = PIDcontroller(300, 0, 0)
 oxr = Oxyreader()
 
-targetTemp = 28
+targetTemp = 40
 
 heaterPin = 18
 
@@ -19,17 +19,18 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(heaterPin, GPIO.OUT)
         
 p = GPIO.PWM(heaterPin, 50)
-p.start(0)
-        
+p.start(0)      
 
 start_time = time.time()
 
 file = open("data.txt", "w")
 
+
 times = []
 temp = []
 corr = []
 oxytemp = []
+
 
 
 try:
@@ -65,7 +66,10 @@ try:
         
         file.write(datastr)
 
+        
         time.sleep(0.5)
+        
+        
         
 except Exception as e:
     print(Exception)
@@ -82,7 +86,7 @@ except KeyboardInterrupt:
    ax.set_xlabel("time [s]")
    ax.set_ylabel("temperature [°C]", color='red')
    ax.plot(times, temp, label="Temperature", color='red')
-   ax.plot(times, oxytemp, label="First Temperature", color='red')
+   ax.plot(times, oxytemp, label="First Temperature", color='green')
    
    ax2 = ax.twinx()
    ax2.set_ylabel("correction [-]", color='blue')
