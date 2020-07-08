@@ -1,5 +1,6 @@
 import time
 import matplotlib.pyplot as plt
+from matplotlib.ticker import LinearLocator
 import RPi.GPIO as GPIO
 
 from shtreader import Sht3x
@@ -8,7 +9,7 @@ from oxyreader import Oxyreader
 
 
 sht31 = Sht3x()
-pid = PIDcontroller(300, 0, 0)
+pid = PIDcontroller(1000, 0, 0)
 oxr = Oxyreader()
 
 targetTemp = 40
@@ -61,7 +62,7 @@ try:
         temp.append(currentTemp)
         corr.append(correction)
         
-        datastr = str(timeEllapsed) + ";" + str(correction) + ";" + str(currentTemp) + "\n"
+        datastr = str(timeEllapsed) + ";" + str(correction) + ";" + str(currentTemp) + ";" + str(oxyTemp) + "\n"
         
         
         file.write(datastr)
@@ -87,6 +88,7 @@ except KeyboardInterrupt:
    ax.set_ylabel("temperature [°C]", color='red')
    ax.plot(times, temp, label="Temperature", color='red')
    ax.plot(times, oxytemp, label="First Temperature", color='green')
+   ax.get_yaxis().set_major_locator(LinearLocator(numticks=12))
    
    ax2 = ax.twinx()
    ax2.set_ylabel("correction [-]", color='blue')
