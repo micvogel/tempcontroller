@@ -7,15 +7,16 @@ from shtreader import Sht3x
 from pidcontroller import PIDcontroller
 from oxyreader import Oxyreader
 
-KU = 1200
-TU = 700
+KU = 1500
+TU = 1000
 
-KP = 0.45*KU
-KI = 0.54*KU/TU
+KP = 0.6*KU
+KI = 1.75*KU/TU
+KD = 3*KU*TU/40
 
 
 sht31 = Sht3x()
-pid = PIDcontroller(KP, KI, 0)
+pid = PIDcontroller(1500, 0, 0)
 oxr = Oxyreader()
 
 targetTemp = 40
@@ -37,7 +38,6 @@ times = []
 temp = []
 corr = []
 oxytemp = []
-
 
 
 try:
@@ -75,8 +75,7 @@ try:
 
         
         time.sleep(0.5+0.28)
-        
-        
+             
         
 except Exception as e:
     print(Exception)
