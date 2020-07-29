@@ -11,15 +11,15 @@ import numpy as np
 
 class Sht3x:
     def __init__(self):
-        
+
         # SHT3x hex adres
         self.SHT3x_ADDR     = 0x44
         self.SHT3x_SS       = 0x2C
         self.SHT3x_HIGH     = 0x06
         self.SHT3x_READ     = 0x00
-        
+
         self.bus = smbus.SMBus(1)
-        
+
     def getTempAndHum(self):
         """This function reads temperature and humidity from sht31 sensor
         via i2c and returns it.
@@ -47,3 +47,6 @@ class Sht3x:
 
         # Return Temperature and Humdity
         return(Temperature,Humidity)
+
+test = Sht3x()
+test.getTempAndHum()

@@ -21,8 +21,6 @@ class Oxyreader:
        self.ser.write(tx)
        resp = self.ser.readline().decode('UTF-8').split()
 
-       print(resp)
-
        return resp[1]
 
     def getpercO2(self):
@@ -31,8 +29,6 @@ class Oxyreader:
 
        self.ser.write(tx)
        resp = self.ser.readline().decode('UTF-8').split()
-
-       print(resp)
 
        return resp[1]
 
@@ -43,8 +39,6 @@ class Oxyreader:
        self.ser.write(tx)
        resp = self.ser.readline().decode('UTF-8').split()
 
-       print(resp)
-
        return resp[1]
 
     def getpressO2(self):
@@ -53,7 +47,5 @@ class Oxyreader:
 
        self.ser.write(tx)
        resp = self.ser.readline().decode('UTF-8').split()
-
-       print(resp)
 
        return resp[1]

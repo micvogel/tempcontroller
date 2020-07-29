@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import LinearLocator
 import RPi.GPIO as GPIO
 
-from shtreader import Sht3x
+from sht3xreader import Sht3x
 from pidcontroller import PIDcontroller
 from oxyreader import Oxyreader
 
